@@ -1,0 +1,194 @@
+
+
+BPM: 67 Temp: 99.60
+
+BPM: 60 Temp: 98.80
+
+BPM: 60 Temp: 98.50
+
+BPM: 60 Temp: 99.20
+
+BPM: 60 Temp: 99.20
+
+BPM: 60 Temp: 98.40
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 98.50
+
+BPM: 90 Temp: 98.70
+
+BPM: 90 Temp: 99.10
+
+BPM: 90 Temp: 98.70
+
+BPM: 90 Temp: 99.10
+
+BPM: 90 Temp: 99.50
+
+BPM: 90 Temp: 98.70
+
+BPM: 90 Temp: 98.50
+
+BPM: 90 Temp: 99.30
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 99.70
+
+BPM: 90 Temp: 99.20
+
+BPM: 90 Temp: 99.10
+
+BPM: 90 Temp: 99.20
+
+BPM: 90 Temp: 98.80
+
+BPM: 90 Temp: 99.70
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 99.70
+
+BPM: 90 Temp: 99.70
+
+BPM: 90 Temp: 99.40
+
+BPM: 90 Temp: 99.50
+
+BPM: 90 Temp: 99.50
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 98.30
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 99.40
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 98.50
+
+BPM: 90 Temp: 99.40
+
+BPM: 90 Temp: 99.50
+
+BPM: 90 Temp: 99.40
+
+BPM: 90 Temp: 98.30
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 98.30
+
+BPM: 90 Temp: 98.20
+
+BPM: 90 Temp: 99.50
+
+BPM: 90 Temp: 99.50
+
+BPM: 90 Temp: 98.50
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 99.20
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 98.70
+
+BPM: 90 Temp: 99.50
+
+BPM: 90 Temp: 99.10
+
+BPM: 90 Temp: 98.70
+
+BPM: 90 Temp: 98.30
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 99.40
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 99.80
+
+BPM: 90 Temp: 99.50
+
+BPM: 90 Temp: 98.20
+
+BPM: 90 Temp: 98.80
+
+BPM: 90 Temp: 99.10
+
+BPM: 90 Temp: 98.30
+
+BPM: 90 Temp: 99.80
+
+BPM: 90 Temp: 99.30
+
+BPM: 90 Temp: 98.20
+
+BPM: 90 Temp: 98.20
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 98.50
+
+BPM: 90 Temp: 98.50
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 99.70
+
+BPM: 90 Temp: 99.70
+
+BPM: 90 Temp: 98.30
+
+BPM: 90 Temp: 99.10
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 99.30
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 98.20
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 98.60
+
+BPM: 90 Temp: 98.20
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 98.40
+
+BPM: 90 Temp: 98.60
+
+BPM: 90 Temp: 99.30
+
+BPM: 90 Temp: 99.60
+
+BPM: 90 Temp: 98.30
+
+BPM: 90 Temp: 98.10
+
+BPM: 90 Temp: 98.50
+
