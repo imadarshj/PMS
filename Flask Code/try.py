@@ -5,12 +5,11 @@ import time
 
 from flask import Flask, render_template, request
 app = Flask(__name__,template_folder='template')
-#ser = serial.Serial('/dev/rfcomm0',9600) 
-#ser1 = ser.readline().decode('ascii')
 path='/sys/class/backlight/intel_backlight/brightness' 
 
 file1 = open('input.txt', 'r')
-# @ signifies a decorator
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -21,6 +20,9 @@ def heartrate():
 	input_list = []
 	while(1):
 		try:
+			#ser = serial.Serial('/dev/rfcomm8',9600) 
+			#input_list  = str(ser.readline())
+
 			input_list.append(str(file1.readline()))
 			return render_template('input.html', input=input_list)
 		except KeyboardInterrupt:
