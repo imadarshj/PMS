@@ -20,10 +20,10 @@ def heartrate():
 	input_list = []
 	while(1):
 		try:
-			#ser = serial.Serial('/dev/rfcomm8',9600) 
-			#input_list  = str(ser.readline())
+			ser = serial.Serial('/dev/rfcomm0',9600) 
+			input_list  = str(ser.readline())
 
-			input_list.append(str(file1.readline()))
+			#input_list.append(str(file1.readline()))
 			return render_template('input.html', input=input_list)
 		except KeyboardInterrupt:
 			print('Interrupted')

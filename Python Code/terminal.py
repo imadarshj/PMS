@@ -6,7 +6,7 @@ import serial
 import sys
 import os
 
-ser = serial.Serial('/dev/rfcomm8',9600) 
+ser = serial.Serial('/dev/rfcomm0',9600) 
 
 path='/sys/class/backlight/intel_backlight/brightness' 
 
