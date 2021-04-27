@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <title>Sensor output</title>
+</head>
+
+<body>
+
+<div id="place_for_input"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+
+function print(){
+  var text = 0;
+    $.ajax({
+      url: "/heart",
+      type: "get",
+      data: {jsdata: text},
+      success: function(response) {
+        $("#place_for_input").html(response);
+      },
+      error: function(xhr) {
+        //Do Something to handle error
+      }
+    });
+    setTimeout(print, 100);
+}
+
+print();
+
+</script>
+
+</body>
+
+</html>
