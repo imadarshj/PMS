@@ -9,6 +9,7 @@ path='/sys/class/backlight/intel_backlight/brightness'
 
 file1 = open('input.txt', 'r')
 
+input_list = ["",]
 
 @app.route('/')
 def index():
@@ -17,13 +18,14 @@ def index():
 @app.route('/heart')
 def heartrate():
 	text = request.args.get('jsdata')
-	input_list = []
+	
 	while(1):
 		try:
-			ser = serial.Serial('/dev/rfcomm0',9600) 
-			input_list  = str(ser.readline())
+			ser = serial.Serial('/dev/rfcomm1',9600) 
+			input_list.append(str(ser.readline()))
 
 			#input_list.append(str(file1.readline()))
+			#print(input_list)
 			return render_template('input.html', input=input_list)
 		except KeyboardInterrupt:
 			print('Interrupted')
