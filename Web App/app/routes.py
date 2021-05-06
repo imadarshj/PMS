@@ -1,8 +1,19 @@
+import os
+from datetime import datetime, timedelta
 from app import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
 from app.forms import RegistrationForm, LoginForm
 from app.models import User
 from flask_login import login_user, current_user, logout_user, login_required
+
+def datetime_range(start, end, delta):
+    current = start
+    i = 0
+    while i < end:
+        yield current
+        current += delta
+        i += 1
+
 
 @app.route("/")
 @app.route("/home")
@@ -37,7 +48,7 @@ def login():
         if(user and bcrypt.check_password_hash(user.password, forms.password.data)):
             login_user(user, remember=forms.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            return redirect(next_page) if next_page else redirect(url_for('dashboard'))
         else:
             flash('Login unsuccessful. Please check your email and password.', 'danger')
     return render_template('login.html', title='Login', form=forms)
@@ -47,7 +58,28 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@app.route("/account")
+@app.route("/dashboard")
 @login_required
-def account():
-    return render_template('account.html', title='Account')
+def dashboard():
+    # text = request.args.get('jsdata')
+    f = open('D:\\TARP\Web App\\app\\input.txt', 'r')
+    data = []
+    bpm = []
+    temperature = []
+    time = []
+	
+    while(1):
+        try:
+            # ser = serial.Serial('/dev/rfcomm1',9600) 
+	 		# input_list.append(str(ser.readline()))
+            for line in f:
+                data.append(line.strip())
+            data = [i for i in data if i != '']
+            for item in data:
+                temp = item.split(' ')
+                bpm.append(temp[1])
+                temperature.append(temp[3])
+            time = [dt.strftime('%Y-%m-%dT%H:%M') for dt in datetime_range(datetime.now(), len(data), timedelta(minutes=15))]
+            return render_template('dashboard.html', title='Dashboard', bpm=bpm, temperature=temperature, time=time)
+        except:
+            break
