@@ -23,7 +23,7 @@ Connect bluetooth HC-05
 Go to folder that has the file flask.py
 
 ```
-python flask.py
+python run.py
 ```
 
 ## Authors
