@@ -12,7 +12,7 @@ import pandas as pd
 import numpy as np
 
 model = pickle.load(open(
-    'C:\\Users\\Tushar\\Downloads\\TARP-main\\TARP-main\\Web App\\app\\model.pkl', 'rb'))
+    'C:\\Users\\Tushar\\Desktop\\TARP\\TARP\\Web App\\app\\model.pkl', 'rb'))
 
 
 def datetime_range(start, end, delta):
@@ -106,9 +106,7 @@ def dashboard():
 
 @app.route('/predict')
 def predict():
-    check = pd.DataFrame({'age': [67],	'sex': [1],	'cp': [2],	'trestbps': [152],	'chol': [212],	'fbs': [
-                         0],	'restecg': [0], 'thalach': [150],	'exang': [0],	'oldpeak': [0.8],	'slope': [1],	'ca': [0],	'thal': [3]})
-    scaler = StandardScaler()
-    check = scaler.fit_transform(check)
+    check = pd.DataFrame({'age': [58],	'sex': [0],	'cp': [0],	'trestbps': [100],	'chol': [248],	'fbs': [0],	'restecg': [0],
+                          'thalach': [122],	'exang': [0],	'oldpeak': [1],	'slope': [1],	'ca': [0],	'thal': [2]})
     output = model.predict(check)
     return render_template('predict.html', prediction_text='the output is {}'.format(output[0]), title='predict')
