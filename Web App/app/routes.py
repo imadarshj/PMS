@@ -11,8 +11,7 @@ import pickle
 import pandas as pd
 import numpy as np
 
-model = pickle.load(open(
-    'C:\\Users\\Tushar\\Downloads\\TARP-main\\TARP-main\\Web App\\app\\model.pkl', 'rb'))
+model = pickle.load(open('D:\\TARP\Project\\Web App\\app\\model.pkl', 'rb'))
 
 
 def datetime_range(start, end, delta):
@@ -47,8 +46,7 @@ def register():
                     email=forms.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash(
-            f'Account created for {forms.username.data}! You are now able to login', 'success')
+        flash(f'Account created for {forms.username.data}! You are now able to login', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=forms)
 
@@ -79,8 +77,7 @@ def logout():
 @login_required
 def dashboard():
     # text = request.args.get('jsdata')
-    f = open(
-        'C:\\Users\\Tushar\\Downloads\\TARP-main\\TARP-main\\Web App\\app\\input.txt', 'r')
+    f = open('D:\\TARP\\Project\\Web App\\app\\input.txt', 'r')
     data = []
     bpm = []
     temperature = []
@@ -104,11 +101,36 @@ def dashboard():
             break
 
 
-@app.route('/predict')
+@app.route('/symptom-checker', methods=['GET', 'POST'])
+@login_required
 def predict():
-    check = pd.DataFrame({'age': [67],	'sex': [1],	'cp': [2],	'trestbps': [152],	'chol': [212],	'fbs': [
-                         0],	'restecg': [0], 'thalach': [150],	'exang': [0],	'oldpeak': [0.8],	'slope': [1],	'ca': [0],	'thal': [3]})
-    scaler = StandardScaler()
-    check = scaler.fit_transform(check)
-    output = model.predict(check)
-    return render_template('predict.html', prediction_text='the output is {}'.format(output[0]), title='predict')
+    if(request.method == 'POST'):
+        result = request.form
+        values = []
+        for key, value in result.items():
+            values.append(value)
+        check = pd.DataFrame({
+            'age': [values[0]],	
+            'sex': [values[1]],	
+            'cp': [values[2]],	
+            'trestbps': [values[3]],	
+            'chol': [values[4]],	
+            'fbs': [values[5]],	
+            'restecg': [values[6]], 
+            'thalach': [values[7]],	
+            'exang': [values[8]],	
+            'oldpeak': [values[9]],	
+            'slope': [values[10]],	
+            'ca': [values[11]],	
+            'thal': [values[12]]
+        })
+        scaler = StandardScaler()
+        check = scaler.fit_transform(check)
+        output = model.predict(check)
+        if(int(output[0]) == 0):
+            flash(f'You do not have any Symptoms of Heart Disease.', 'success')
+        else:
+            flash(f'You do have symptoms of Heart Disease. Please consult a doctor.', 'danger')
+        return render_template('predict.html', title='predict')
+    else:
+        return render_template('predict.html', title='predict')
