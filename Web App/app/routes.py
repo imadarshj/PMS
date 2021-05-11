@@ -1,4 +1,6 @@
 import os
+import serial 
+import sys
 from datetime import datetime, timedelta
 from app import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
@@ -11,8 +13,10 @@ import pickle
 import pandas as pd
 import numpy as np
 
-model = pickle.load(open(
-    'C:\\Users\\Tushar\\Desktop\\TARP\\TARP\\Web App\\app\\model.pkl', 'rb'))
+dirname, filename = os.path.split(os.path.abspath(__file__))
+#print(dirname)
+
+model = pickle.load(open(dirname+'/model.pkl', 'rb'))
 
 
 def datetime_range(start, end, delta):
@@ -74,33 +78,67 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+input_list=[]
 
 @app.route("/dashboard")
 @login_required
 def dashboard():
     # text = request.args.get('jsdata')
-    f = open('C:\\Users\\Tushar\\Desktop\\TARP\\TARP\\Web App\\app\\input.txt', 'r')
+    f = open(dirname+'/input.txt', 'r')
     data = []
     bpm = []
     temperature = []
     time = []
+    count=0
+    ser = serial.Serial('/dev/rfcomm1',9600)
 
     while(1):
         try:
-            # ser = serial.Serial('/dev/rfcomm1',9600)
-            # input_list.append(str(ser.readline()))
-            for line in f:
+            # Making -> b'BPM: 90 Temp: 99.70\r\n'  ==> as BPM: 90 Temp: 99.70
+            #print("Hi")
+            #print("Hi 3")
+            x=str(ser.readline())
+            #print("Hi 1")
+            x=x[2:]
+            x=x[:len(x)-5]
+            input_list.append(x)
+            
+            print("********************8"+x+"8**********************")
+            '''for line in f:
                 data.append(line.strip())
+                print(line)
             data = [i for i in data if i != '']
+            print(input_list)
+            print(data)
             for item in data:
                 temp = item.split(' ')
                 bpm.append(temp[1])
                 temperature.append(temp[3])
-            time = [dt.strftime('%Y-%m-%dT%H:%M') for dt in datetime_range(
-                datetime.now(), len(data), timedelta(minutes=15))]
-            return render_template('dashboard.html', title='Dashboard', bpm=bpm, temperature=temperature, time=time)
+            time = [dt.strftime('%Y-%m-%dT%H:%M') for dt in datetime_range(datetime.now(), len(data), timedelta(minutes=15))]'''
+            count=count+1
+            #break
+            if count==100:
+                count=0
+                break
         except:
+            print("Exception")
             break
+    print(input_list)
+    #print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    for line in f:
+        data.append(line.strip())
+        print(line)
+    data = [i for i in data if i != '']
+    #print(input_list)
+    #print(data)
+    # Use data instead of input_list if no hardware
+    for item in input_list:
+        temp = item.split(' ')
+        bpm.append(temp[1])
+        temperature.append(temp[3])
+    time = [dt.strftime('%Y-%m-%dT%H:%M') for dt in datetime_range(datetime.now(), len(data), timedelta(minutes=15))]
+    input_list.clear()
+    return render_template('dashboard.html', title='Dashboard', bpm=bpm, temperature=temperature, time=time)
 
 
 @app.route('/symptom-checker', methods=['GET', 'POST'])

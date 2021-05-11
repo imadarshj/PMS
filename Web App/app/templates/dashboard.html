@@ -1,10 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
+    <meta http-equiv="refresh" content="90">
     <canvas id="lineChart_bpm" width="1000" height="300"></canvas>
     <br><br>
     <canvas id="lineChart_temperature" width="1000" height="300"></canvas>
 
     <script>
+	window.setTimeout(function () {
+	  window.location.reload();
+	}, 20000);
         var chartData_bpm = {
             labels : 
             [{% for item in time %}
