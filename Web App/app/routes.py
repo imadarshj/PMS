@@ -1,8 +1,9 @@
 import os
-import serial 
+# import serial 
 import sys
 from datetime import datetime, timedelta
-from app import app, db, bcrypt
+from app import app, db, bcrypt, mail
+from flask_mail import Message
 from flask import render_template, url_for, flash, redirect, request
 from app.forms import RegistrationForm, LoginForm
 from app.models import User
@@ -17,6 +18,9 @@ dirname, filename = os.path.split(os.path.abspath(__file__))
 #print(dirname)
 
 model = pickle.load(open(dirname+'/model.pkl', 'rb'))
+
+def most_frequent(bpm):
+    return max(set(bpm), key=bpm.count)
 
 
 def datetime_range(start, end, delta):
@@ -90,7 +94,7 @@ def dashboard():
     temperature = []
     time = []
     count=0
-    ser = serial.Serial('/dev/rfcomm1',9600)
+    # ser = serial.Serial('/dev/rfcomm1',9600)
 
     while(1):
         try:
@@ -123,19 +127,26 @@ def dashboard():
         except:
             print("Exception")
             break
-    print(input_list)
     #print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
     for line in f:
         data.append(line.strip())
-        print(line)
     data = [i for i in data if i != '']
     #print(input_list)
     #print(data)
     # Use data instead of input_list if no hardware
-    for item in input_list:
+    for item in data:
         temp = item.split(' ')
         bpm.append(temp[1])
         temperature.append(temp[3])
+    # Sending Emails Part
+    most_frequent_bpm = most_frequent(bpm)
+    msg = f'Hi {current_user.username} Your Heartrate is: {most_frequent_bpm}'
+    email = current_user.email
+    subject = 'HeartRate Alert'
+    message = Message(subject, sender="dummy768.mail@gmail.com", recipients=[email])
+    message.body = msg
+    mail.send(message)
+    #####################
     time = [dt.strftime('%Y-%m-%dT%H:%M') for dt in datetime_range(datetime.now(), len(data), timedelta(minutes=15))]
     input_list.clear()
     return render_template('dashboard.html', title='Dashboard', bpm=bpm, temperature=temperature, time=time)
