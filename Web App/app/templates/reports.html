@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Reports</h1>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="grid invoice">
+                    <div class="grid-body">                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="line">
+                                            <td><strong>#</strong></td>
+                                            <td class="text-center"><strong>RESULT</strong></td>
+                                            <td class="text-center"><strong>HEART RATE</strong></td>
+                                            <td class="text-right"><strong>RESTING BLOOD PRESSURE</strong></td>
+                                            <td class="text-right"><strong>SERUM CHOLESTROL</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for report in reports %}
+                                            <tr>
+                                                <td>{{ loop.index }}</td>
+                                                <td>
+                                                    {% if report.result == 'You didnt have any sypmtoms of Heart Disease' %}
+                                                        <span style="color: green; font-weight: bold;">{{ report.result }}</span>
+                                                    {% else %}
+                                                        <span style="color: red; font-weight: bold;">{{ report.result }}</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-center">{{ report.thalach }}</td>
+                                                <td class="text-center">{{ report.trestbps }}</td>
+                                                <td class="text-right">{{ report.chol }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>									
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

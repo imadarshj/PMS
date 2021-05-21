@@ -6,7 +6,7 @@ from app import app, db, bcrypt, mail
 from flask_mail import Message
 from flask import render_template, url_for, flash, redirect, request
 from app.forms import RegistrationForm, LoginForm
-from app.models import User
+from app.models import User, Report
 from flask_login import login_user, current_user, logout_user, login_required
 
 from sklearn.preprocessing import StandardScaler
@@ -52,7 +52,7 @@ def register():
         hashed_password = bcrypt.generate_password_hash(
             forms.password.data).decode('utf-8')
         user = User(username=forms.username.data,
-                    email=forms.email.data, password=hashed_password)
+                    email=forms.email.data, password=hashed_password, phone=forms.phone.data)
         db.session.add(user)
         db.session.commit()
         flash(
@@ -139,13 +139,13 @@ def dashboard():
         bpm.append(temp[1])
         temperature.append(temp[3])
     # Sending Emails Part
-    most_frequent_bpm = most_frequent(bpm)
-    msg = f'Hi {current_user.username} Your Heartrate is: {most_frequent_bpm}'
-    email = current_user.email
-    subject = 'HeartRate Alert'
-    message = Message(subject, sender="dummy768.mail@gmail.com", recipients=[email])
-    message.body = msg
-    mail.send(message)
+    # most_frequent_bpm = most_frequent(bpm)
+    # msg = f'Hi {current_user.username} Your Heartrate is: {most_frequent_bpm}'
+    # email = current_user.email
+    # subject = 'HeartRate Alert'
+    # message = Message(subject, sender="dummy768.mail@gmail.com", recipients=[email])
+    # message.body = msg
+    # mail.send(message)
     #####################
     time = [dt.strftime('%Y-%m-%dT%H:%M') for dt in datetime_range(datetime.now(), len(data), timedelta(minutes=15))]
     input_list.clear()
@@ -177,11 +177,25 @@ def predict():
         })
 
         output = model.predict(check)
+        result = ''
         if(int(output[0]) == 0):
             flash(f'You do not have any Symptoms of Heart Disease.', 'success')
+            result = 'You didnt have any sypmtoms of Heart Disease'
         else:
             flash(
                 f'You do have symptoms of Heart Disease. Please consult a doctor.', 'danger')
-        return render_template('predict.html', title='predict')
+            result = 'You did have symptoms of Heart Disease'
+        report = Report(age=values[0], sex=values[1], cp=values[2], trestbps=values[3], chol=values[4], fbs=values[5], restecg=values[6], thalach=values[7], exang=values[8], oldpeak=values[9], slope=values[10], ca=values[11], thal=values[12], result=result, patient=current_user)
+        db.session.add(report)
+        db.session.commit()
+        return render_template('predict.html', title='Predict')
     else:
-        return render_template('predict.html', title='predict')
+        return render_template('predict.html', title='Predict')
+
+
+@app.route('/reports', methods=['GET', 'POST'])
+@login_required
+def reports():
+    user = User.query.filter_by(username=current_user.username).first()
+    reports = user.reports
+    return render_template('reports.html', title='Report', reports=reports)

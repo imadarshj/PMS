@@ -11,6 +11,7 @@ class RegistrationForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
+    phone = StringField('Phone', validators=[DataRequired(), Length(10)])
     password = PasswordField('Password',
                              validators=[DataRequired()])
     confirmPassword = PasswordField('Confirm Password',
@@ -29,7 +30,6 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError(
                 'That email is taken. Please choose an another email')
-
 
 class LoginForm(FlaskForm):
     email = StringField('Email',
