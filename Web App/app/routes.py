@@ -103,7 +103,7 @@ def dashboard():
     temperature = []
     time = []
     count = 0
-    ser = serial.Serial('/dev/rfcomm3',9600)
+    ser = serial.Serial('/dev/rfcomm4',9600)
 
     while(1):
         try:
