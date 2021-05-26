@@ -83,3 +83,68 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+.frontview{
+  background: url(../Images/Below_Navbar_1.jpg);
+  height: 50em;
+  background-position: center;
+  background-size: cover;
+}
+.heading{
+  font-weight: bold;
+  font-size: 90px;
+}
+.firstrow1{
+  padding-top: 6em;
+}
+.secondrow2{
+  margin-top: 5em;
+  color: #18123b;
+}
+.hospitality{
+  background-color: #BBDEFB;
+  padding: 2em;
+}
+.emergency{
+  background-color: #03A9F4;
+  padding: 2em;
+}
+.chamber{
+  background-color: #BBDEFB;
+  padding: 2em;
+}
+.welcome{
+  margin-top: 2em;
+}
+.department{
+  margin: 1em;
+  background-color: #B3E5FC;
+  padding-bottom: 2em;
+}
+.review{
+  background-color: #18123b;
+  padding: 2em;
+  color: #ffffff;
+}
+.review .fa{
+  font-size: 30px;
+}
+.partner{
+  margin-bottom: 2em;
+}
+.footer-copyright{
+  background-color: #18123b;
+  color: #ffffff;
+}
+.about{
+  background-color: #03A9F4;
+}
+.about1{
+  padding-bottom: 2em;
+  padding-top: 2em;
+}
+.about .fa{
+  font-size: 40px;
+  color: #000000;
+  padding: 20px;
+}

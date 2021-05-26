@@ -21,6 +21,7 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"Üser('{self.username}', '{self.email}', '{self.image_file}')"
 
+
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     age = db.Column(db.String(100), nullable=False)

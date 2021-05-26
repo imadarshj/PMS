@@ -1,5 +1,5 @@
 import os
-# import serial 
+# import serial
 import sys
 from datetime import datetime, timedelta
 from app import app, db, bcrypt, mail
@@ -15,9 +15,10 @@ import pandas as pd
 import numpy as np
 
 dirname, filename = os.path.split(os.path.abspath(__file__))
-#print(dirname)
+# print(dirname)
 
 model = pickle.load(open(dirname+'/model.pkl', 'rb'))
+
 
 def most_frequent(bpm):
     return max(set(bpm), key=bpm.count)
@@ -82,7 +83,14 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-input_list=[]
+
+input_list = []
+maximum_heart_rate = 122
+
+
+def most_frequent(List):
+    return max(set(List), key=List.count)
+
 
 @app.route("/dashboard")
 @login_required
@@ -93,20 +101,20 @@ def dashboard():
     bpm = []
     temperature = []
     time = []
-    count=0
+    count = 0
     # ser = serial.Serial('/dev/rfcomm1',9600)
 
     while(1):
         try:
             # Making -> b'BPM: 90 Temp: 99.70\r\n'  ==> as BPM: 90 Temp: 99.70
-            #print("Hi")
-            #print("Hi 3")
-            x=str(ser.readline())
-            #print("Hi 1")
-            x=x[2:]
-            x=x[:len(x)-5]
+            # print("Hi")
+            # print("Hi 3")
+            x = str(ser.readline())
+            # print("Hi 1")
+            x = x[2:]
+            x = x[:len(x)-5]
             input_list.append(x)
-            
+
             print("********************8"+x+"8**********************")
             '''for line in f:
                 data.append(line.strip())
@@ -119,20 +127,20 @@ def dashboard():
                 bpm.append(temp[1])
                 temperature.append(temp[3])
             time = [dt.strftime('%Y-%m-%dT%H:%M') for dt in datetime_range(datetime.now(), len(data), timedelta(minutes=15))]'''
-            count=count+1
-            #break
-            if count==100:
-                count=0
+            count = count+1
+            # break
+            if count == 100:
+                count = 0
                 break
         except:
             print("Exception")
             break
-    #print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    # print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
     for line in f:
         data.append(line.strip())
     data = [i for i in data if i != '']
-    #print(input_list)
-    #print(data)
+    # print(input_list)
+    # print(data)
     # Use data instead of input_list if no hardware
     for item in data:
         temp = item.split(' ')
@@ -147,9 +155,27 @@ def dashboard():
     # message.body = msg
     # mail.send(message)
     #####################
-    time = [dt.strftime('%Y-%m-%dT%H:%M') for dt in datetime_range(datetime.now(), len(data), timedelta(minutes=15))]
+    # Calculating the most frequent heart rate
+    maximum_heart_rate = 151
+    # print(var_list)
+    # print(maximum_heart_rate)
+    symptoms1 = ""
+    symptoms2 = ""
+    if(int(maximum_heart_rate) > 150):
+        symptoms1 = "Your heart rate is " + \
+            str(maximum_heart_rate) + \
+            " .You may have symptoms of Supraventricular Tachycardia"
+    elif(int(maximum_heart_rate) < 60):
+        symptoms2 = "Your heart rate is " + \
+            str(maximum_heart_rate) + " .You may have symptoms of Bradycardia."
+    else:
+        symptoms1 = "Your heart rate is " + \
+            str(maximum_heart_rate) + " which is normal."
+
+    time = [dt.strftime('%Y-%m-%dT%H:%M')
+            for dt in datetime_range(datetime.now(), len(data), timedelta(minutes=15))]
     input_list.clear()
-    return render_template('dashboard.html', title='Dashboard', bpm=bpm, temperature=temperature, time=time)
+    return render_template('dashboard.html', title='Dashboard', bpm=bpm, temperature=temperature, time=time, symptoms1=symptoms1, symptoms2=symptoms2)
 
 
 @app.route('/symptom-checker', methods=['GET', 'POST'])
@@ -167,15 +193,9 @@ def predict():
             'trestbps': [values[3]],
             'chol': [values[4]],
             'fbs': [values[5]],
-            'restecg': [values[6]],
-            'thalach': [values[7]],
-            'exang': [values[8]],
-            'oldpeak': [values[9]],
-            'slope': [values[10]],
-            'ca': [values[11]],
-            'thal': [values[12]]
+            'thalach': [values[6]]
         })
-
+        # print(var_list)
         output = model.predict(check)
         result = ''
         if(int(output[0]) == 0):
@@ -185,7 +205,8 @@ def predict():
             flash(
                 f'You do have symptoms of Heart Disease. Please consult a doctor.', 'danger')
             result = 'You did have symptoms of Heart Disease'
-        report = Report(age=values[0], sex=values[1], cp=values[2], trestbps=values[3], chol=values[4], fbs=values[5], restecg=values[6], thalach=values[7], exang=values[8], oldpeak=values[9], slope=values[10], ca=values[11], thal=values[12], result=result, patient=current_user)
+        report = Report(age=values[0], sex=values[1], cp=values[2], trestbps=values[3], chol=values[4], fbs=values[5], restecg=str('remove'),
+                        thalach=values[6], exang=str('remove'), oldpeak=str('remove'), slope=str('remove'), ca=str('remove'), thal=str('remove'), result=result, patient=current_user)
         db.session.add(report)
         db.session.commit()
         return render_template('predict.html', title='Predict')
@@ -193,8 +214,8 @@ def predict():
         return render_template('predict.html', title='Predict')
 
 
-@app.route('/reports', methods=['GET', 'POST'])
-@login_required
+@ app.route('/reports', methods=['GET', 'POST'])
+@ login_required
 def reports():
     user = User.query.filter_by(username=current_user.username).first()
     reports = user.reports
