@@ -1,6 +1,7 @@
 import os
 import serial
 import sys
+from twilio.rest import Client
 from datetime import datetime, timedelta
 from app import app, db, bcrypt, mail
 from flask_mail import Message
@@ -102,7 +103,7 @@ def dashboard():
     temperature = []
     time = []
     count = 0
-    ser = serial.Serial('/dev/rfcomm1',9600)
+    ser = serial.Serial('/dev/rfcomm3',9600)
 
     while(1):
         try:
@@ -161,6 +162,17 @@ def dashboard():
 	    message = Message(subject, sender="dummy768.mail@gmail.com", recipients=[email])
 	    message.body = msg
 	    mail.send(message)
+	    
+	    account_sid="ACd3e473fa31ae435131e9294621b7d251"
+	    auth_token="4fddb8493a9a346d045bcad21ea922b9"
+	    client = Client(account_sid,auth_token)
+	    client.messages.create(
+	    	to="+918479047961",
+	    	from_="+19045745588",
+	    	body=msg
+	    )
+	    
+	    	
     file1.close()
     file1 = open('myfile.txt', 'w')
     file1.write("1")
