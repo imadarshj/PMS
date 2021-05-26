@@ -85,7 +85,7 @@ def logout():
 
 
 input_list = []
-maximum_heart_rate = 122
+maximum_heart_rate = 0
 
 
 def most_frequent(List):
@@ -156,7 +156,8 @@ def dashboard():
     # mail.send(message)
     #####################
     # Calculating the most frequent heart rate
-    maximum_heart_rate = 151
+    global maximum_heart_rate
+    maximum_heart_rate = most_frequent(bpm)
     # print(var_list)
     # print(maximum_heart_rate)
     symptoms1 = ""
@@ -193,9 +194,9 @@ def predict():
             'trestbps': [values[3]],
             'chol': [values[4]],
             'fbs': [values[5]],
-            'thalach': [values[6]]
+            'thalach': [maximum_heart_rate]
         })
-        # print(var_list)
+        # print(maximum_heart_rate)
         output = model.predict(check)
         result = ''
         if(int(output[0]) == 0):
@@ -206,12 +207,12 @@ def predict():
                 f'You do have symptoms of Heart Disease. Please consult a doctor.', 'danger')
             result = 'You did have symptoms of Heart Disease'
         report = Report(age=values[0], sex=values[1], cp=values[2], trestbps=values[3], chol=values[4], fbs=values[5], restecg=str('remove'),
-                        thalach=values[6], exang=str('remove'), oldpeak=str('remove'), slope=str('remove'), ca=str('remove'), thal=str('remove'), result=result, patient=current_user)
+                        thalach=maximum_heart_rate, exang=str('remove'), oldpeak=str('remove'), slope=str('remove'), ca=str('remove'), thal=str('remove'), result=result, patient=current_user)
         db.session.add(report)
         db.session.commit()
         return render_template('predict.html', title='Predict')
     else:
-        return render_template('predict.html', title='Predict')
+        return render_template('predict.html', title='Predict', maximum_heart_rate=maximum_heart_rate)
 
 
 @ app.route('/reports', methods=['GET', 'POST'])
