@@ -1,5 +1,5 @@
 import os
-# import serial
+import serial
 import sys
 from datetime import datetime, timedelta
 from app import app, db, bcrypt, mail
@@ -102,7 +102,7 @@ def dashboard():
     temperature = []
     time = []
     count = 0
-    # ser = serial.Serial('/dev/rfcomm1',9600)
+    ser = serial.Serial('/dev/rfcomm1',9600)
 
     while(1):
         try:
@@ -110,6 +110,7 @@ def dashboard():
             # print("Hi")
             # print("Hi 3")
             x = str(ser.readline())
+            #print(x)
             # print("Hi 1")
             x = x[2:]
             x = x[:len(x)-5]
@@ -147,13 +148,23 @@ def dashboard():
         bpm.append(temp[1])
         temperature.append(temp[3])
     # Sending Emails Part
-    # most_frequent_bpm = most_frequent(bpm)
-    # msg = f'Hi {current_user.username} Your Heartrate is: {most_frequent_bpm}'
-    # email = current_user.email
-    # subject = 'HeartRate Alert'
-    # message = Message(subject, sender="dummy768.mail@gmail.com", recipients=[email])
-    # message.body = msg
-    # mail.send(message)
+    file1 = open('myfile.txt', 'r')
+    s=file1.read()
+    print("----------------The sent. is "+s+"  - ")
+    print(type(s))
+    if(int(s)==0):
+	    most_frequent_bpm = most_frequent(bpm)
+	    print("Equal")
+	    msg = f'Hi {current_user.username} Your Heartrate is: {most_frequent_bpm}'
+	    email = current_user.email
+	    subject = 'HeartRate Alert'
+	    message = Message(subject, sender="dummy768.mail@gmail.com", recipients=[email])
+	    message.body = msg
+	    mail.send(message)
+    file1.close()
+    file1 = open('myfile.txt', 'w')
+    file1.write("1")
+    file1.close()
     #####################
     # Calculating the most frequent heart rate
     global maximum_heart_rate
