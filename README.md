@@ -29,7 +29,7 @@ python run.py
 ## Authors
 
 * **Adarsh Jaiswal** - [imadarshj](https://github.com/imadarshj)
-* **ADD Please**
+* **Tushar Singh**- [tushar-singh-89](https://github.com/tushar-singh-89)
 
 ## License
 
